@@ -12,6 +12,11 @@ extension UITableView {
         guard let cell = dequeueReusableCell(withIdentifier: T.reuseIdentifier, for: indexPath) as? T else {
             fatalError("Unable to dequeue reusable table view cell")
         }
+        
         return cell
+    }
+    
+    public func register(cell: UITableViewCell.Type) {
+        register(cell, forCellReuseIdentifier: cell.reuseIdentifier)
     }
 }

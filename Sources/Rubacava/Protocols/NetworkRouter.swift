@@ -8,13 +8,13 @@
 import Foundation
 
 public protocol NetworkRouter {
-    var scheme: String { get set }
-    var host: String { get set }
-    var port: Int? { get set }
-    var contentType: String { get set }
-    var authenticationToken: String? { get set }
-    var path: String { get set }
-    var parameters: [URLQueryItem]? { get set }
-    var method: String { get set }
-    var body: Data? { get set }
+    var scheme: String { get }
+    var host: String { get }
+    var port: Int? { get }
+    var contentType: String { get }
+    var authenticationToken: String? { get }
+    var path: String { get }
+    var parameters: [URLQueryItem]? { get }
+    var method: String { get }
+    var body: Data? { get }
 }

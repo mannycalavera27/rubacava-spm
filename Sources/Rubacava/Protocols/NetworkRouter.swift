@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol NetworkRouter {
+public protocol NetworkRouter {
     var scheme: String { get set }
     var host: String { get set }
     var port: Int? { get set }

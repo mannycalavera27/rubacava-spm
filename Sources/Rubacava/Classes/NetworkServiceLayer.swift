@@ -9,7 +9,7 @@ import Foundation
 
 public class NetworkServiceLayer {
 
-    static func request<T: Decodable, N: NetworkRouter>(router: N, completion: @escaping(Result<T, NetworkError>) -> ()) {
+    public static func request<T: Decodable, N: NetworkRouter>(router: N, completion: @escaping(Result<T, NetworkError>) -> ()) {
         
         let components = createComponents(from: router)
         do {
@@ -60,7 +60,7 @@ public class NetworkServiceLayer {
 
     }
     
-    static private func validate(response: URLResponse?, error: Error?) throws {
+    private static func validate(response: URLResponse?, error: Error?) throws {
         if error != nil {
             throw NetworkError.noConnection
         }
@@ -92,7 +92,7 @@ public class NetworkServiceLayer {
     
     }
     
-    static private func createComponents<N: NetworkRouter>(from router: N) -> URLComponents {
+    private static func createComponents<N: NetworkRouter>(from router: N) -> URLComponents {
         var components = URLComponents()
         components.scheme = router.scheme
         components.host = router.host
@@ -102,7 +102,7 @@ public class NetworkServiceLayer {
         return components
     }
     
-    static private func createUrlRequest<N: NetworkRouter>(url: URL?, router: N) throws -> URLRequest {
+    private static func createUrlRequest<N: NetworkRouter>(url: URL?, router: N) throws -> URLRequest {
         guard
             let url = url
         else {
@@ -118,7 +118,7 @@ public class NetworkServiceLayer {
         return urlRequest
     }
     
-    static private func parseResponse<T: Decodable>(data: Data?, into: T.Type) throws -> T{
+    private static func parseResponse<T: Decodable>(data: Data?, into: T.Type) throws -> T{
         guard
             let data = data
         else {

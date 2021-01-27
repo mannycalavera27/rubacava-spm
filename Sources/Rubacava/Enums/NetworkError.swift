@@ -13,10 +13,18 @@ public enum NetworkError: Error {
     case noResponse
     case noHttpResponse
     case noData
-    case jsonDecoding
     case unauthorize
     case forbidden
     case badRequest
     case response(message: String)
+    case jsonDecoding(error: JsonDecodingError)
     case unknown
+    
+    public enum JsonDecodingError: Error {
+        case typeMismatch(key: Any, value: Any)
+        case valueNotFound(key: Any, value: Any)
+        case keyNotFound(key: Any, value: Any)
+        case dataCorrupted(key: Any)
+        case unknown
+    }
 }

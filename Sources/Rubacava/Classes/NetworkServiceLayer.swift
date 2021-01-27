@@ -43,8 +43,8 @@ public class NetworkServiceLayer {
                 } catch NetworkError.noData {
                     completion(.failure(.noData))
                     return
-                } catch NetworkError.jsonDecoding {
-                    completion(.failure(.jsonDecoding))
+                } catch let jsonDecodingError as NetworkError.JsonDecodingError {
+                    completion(.failure(.jsonDecoding(error: jsonDecodingError)))
                     return
                 } catch {
                     completion(.failure(.unknown))
@@ -131,8 +131,21 @@ public class NetworkServiceLayer {
         do {
             let parsedData = try decoder.decode(T.self, from: data)
             return parsedData
+        } catch let decodingError as DecodingError {
+            switch decodingError {
+            case .typeMismatch(let key, let value):
+                throw NetworkError.JsonDecodingError.typeMismatch(key: key, value: value)
+            case .valueNotFound(let key, let value):
+                throw NetworkError.JsonDecodingError.valueNotFound(key: key, value: value)
+            case .keyNotFound(let key, let value):
+                throw NetworkError.JsonDecodingError.keyNotFound(key: key, value: value)
+            case .dataCorrupted(let key):
+                throw NetworkError.JsonDecodingError.dataCorrupted(key: key)
+            default:
+                throw NetworkError.JsonDecodingError.unknown
+            }
         } catch {
-            throw NetworkError.jsonDecoding
+            throw NetworkError.JsonDecodingError.unknown
         }
     }
 }

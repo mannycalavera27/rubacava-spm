@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  DateFormatter+Ext.swift
 //  
 //
 //  Created by Tiziano Cialfi on 27/01/21.
@@ -19,5 +19,4 @@ public extension DateFormatter {
         df.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
         return df
     }()
-    
 }

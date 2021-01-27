@@ -15,15 +15,12 @@ public extension UIView {
                    distribution: UIStackView.Distribution = .fill,
                    alignment: UIStackView.Alignment = .fill,
                    spacing: CGFloat = 0) throws -> UIStackView {
-        do {
-            return try _stackView(axis: axis,
-                          distribution: distribution,
-                          alignment: alignment,
-                          spacing: spacing,
-                          views: views)
-        } catch {
-            throw AutolayoutError.superViewIsNil
-        }
+        
+        return try _stackView(axis: axis,
+                      distribution: distribution,
+                      alignment: alignment,
+                      spacing: spacing,
+                      views: views)
     }
     
     fileprivate func _stackView(axis: NSLayoutConstraint.Axis,
@@ -37,12 +34,7 @@ public extension UIView {
         sv.alignment = alignment
         sv.spacing = spacing
         addSubview(sv)
-        do {
-            try sv.fillSuperview()
-        } catch {
-            throw AutolayoutError.superViewIsNil
-        }
-        
+        try sv.fillSuperview()
         return sv
     }
     

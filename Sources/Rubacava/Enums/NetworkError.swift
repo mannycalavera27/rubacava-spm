@@ -25,6 +25,12 @@ public enum NetworkError: Error {
         case valueNotFound(key: Any, value: Any)
         case keyNotFound(key: Any, value: Any)
         case dataCorrupted(key: Any)
+        case date(error: DateDecodingError)
         case unknown
+        
+        public enum DateDecodingError: Error {
+            case isEmpty
+            case formatterUnavailable
+        }
     }
 }

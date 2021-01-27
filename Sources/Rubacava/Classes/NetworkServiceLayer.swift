@@ -127,6 +127,7 @@ public class NetworkServiceLayer {
         
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
+        decoder.dateDecodingStrategy = .custom(customDateDecodingStrategy)
         
         do {
             let parsedData = try decoder.decode(T.self, from: data)
@@ -147,5 +148,25 @@ public class NetworkServiceLayer {
         } catch {
             throw NetworkError.JsonDecodingError.unknown
         }
+    }
+    
+    private static func customDateDecodingStrategy(decoder: Decoder) throws -> Date {
+        let singleValueContainer = try decoder.singleValueContainer()
+        let dateString = try singleValueContainer.decode(String.self)
+        
+        if dateString.isEmpty {
+            throw NetworkError.JsonDecodingError.DateDecodingError.isEmpty
+        }
+        
+        if let date = DateFormatter.standardWithTSeparator.date(from: dateString) {
+            return date
+        } else if let date = DateFormatter.acf.date(from: dateString) {
+            return date
+        } else {
+            if let timeInterval = TimeInterval(dateString) {
+                return Date(timeIntervalSince1970: timeInterval / 1000)
+            }
+        }
+        throw NetworkError.JsonDecodingError.DateDecodingError.formatterUnavailable
     }
 }

@@ -9,27 +9,26 @@ import UIKit
 
 public extension UIView {
     @discardableResult
-    func fillSuperview(padding: UIEdgeInsets = .zero) throws -> AnchoredConstraints{
-        guard let superview = superview else {
-            throw AutolayoutError.superViewIsNil
-        }
-        return anchor(top: superview.topAnchor,
-                      leading: superview.leadingAnchor,
-                      bottom: superview.bottomAnchor,
-                      trailing: superview.trailingAnchor,
+    func fill(superview: UIView, padding: UIEdgeInsets = .zero) -> AnchoredConstraints {
+        removeFromSuperview()
+        superview.addSubview(self)
+        return anchor(top: self.superview!.topAnchor,
+                      leading: self.superview!.leadingAnchor,
+                      bottom: self.superview!.bottomAnchor,
+                      trailing: self.superview!.trailingAnchor,
                       padding: padding)
     }
     
     @available(iOS 11.0, *)
     @discardableResult
-    func fillSuperviewSafeAreaLayoutGuide(padding: UIEdgeInsets = .zero) throws -> AnchoredConstraints {
-        guard let superview = superview else {
-            throw AutolayoutError.superViewIsNil
-        }
-        return anchor(top: superview.safeAreaLayoutGuide.topAnchor,
-                      leading: superview.safeAreaLayoutGuide.leadingAnchor,
-                      bottom: superview.safeAreaLayoutGuide.bottomAnchor,
-                      trailing: superview.safeAreaLayoutGuide.trailingAnchor)
+    func fillSafeArea(superview: UIView, padding: UIEdgeInsets = .zero) -> AnchoredConstraints {
+        removeFromSuperview()
+        superview.addSubview(self)
+        return anchor(top: self.superview!.safeAreaLayoutGuide.topAnchor,
+                      leading: self.superview!.safeAreaLayoutGuide.leadingAnchor,
+                      bottom: self.superview!.safeAreaLayoutGuide.bottomAnchor,
+                      trailing: self.superview!.safeAreaLayoutGuide.trailingAnchor,
+                      padding: padding)
     }
     
     @discardableResult

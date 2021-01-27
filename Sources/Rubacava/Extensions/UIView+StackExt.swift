@@ -34,7 +34,7 @@ public extension UIView {
         sv.alignment = alignment
         sv.spacing = spacing
         addSubview(sv)
-        try sv.fillSuperview()
+        sv.fill(superview: self)
         return sv
     }
     

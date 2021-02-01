@@ -12,7 +12,7 @@ public final class RCImageView: UIImageView {
     
     public typealias RCSetImageCompletion = (UIImage?, Error?, SDImageCacheType?, URL?) -> ()
     
-    init(contentMode: UIView.ContentMode = .scaleAspectFill, cornerRadius: CGFloat = 0) {
+    public init(contentMode: UIView.ContentMode = .scaleAspectFill, cornerRadius: CGFloat = 0) {
         super.init(frame: .zero)
         set(contentMode: contentMode)
         set(cornerRadius: cornerRadius)

@@ -6,12 +6,8 @@
 //
 
 import UIKit
-import SDWebImage
 
 public final class RCImageView: UIImageView {
-    
-    public typealias RCSetImageCompletion = (UIImage?, Error?, SDImageCacheType?, URL?) -> ()
-    
     public init(contentMode: UIView.ContentMode = .scaleAspectFill, cornerRadius: CGFloat = 0) {
         super.init(frame: .zero)
         set(contentMode: contentMode)
@@ -30,13 +26,5 @@ public final class RCImageView: UIImageView {
     
     private func set(cornerRadius: CGFloat) {
         layer.cornerRadius = cornerRadius
-    }
-    
-    public func setImage(from url: URL?,
-                         placeholder: UIImage? = nil,
-                         completion: RCSetImageCompletion? = nil) {
-        sd_setImage(with: url, placeholderImage: placeholder) { (img, err, cacheType, url) in
-            completion?(img, err, cacheType, url)
-        }
     }
 }

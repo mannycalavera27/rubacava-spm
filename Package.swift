@@ -12,10 +12,10 @@ let package = Package(
         .library(name: "Rubacava", targets: ["Rubacava"]),
     ],
     dependencies: [
-            
+        .package(url: "https://github.com/SDWebImage/SDWebImage", from: "5.10.3")
     ],
     targets: [
-        .target(name: "Rubacava", dependencies: []),
+        .target(name: "Rubacava", dependencies: ["SDWebImage"]),
         .testTarget(name: "RubacavaTests", dependencies: ["Rubacava"]),
     ]
 )

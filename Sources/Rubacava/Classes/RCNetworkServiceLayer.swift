@@ -1,5 +1,5 @@
 //
-//  NetworkServiceLayer.swift
+//  RCNetworkServiceLayer.swift
 //  
 //
 //  Created by Tiziano Cialfi on 20/01/21.
@@ -7,9 +7,9 @@
 
 import Foundation
 
-public class NetworkServiceLayer {
+public class RCNetworkServiceLayer {
 
-    public static func request<T: Decodable, N: NetworkRouter>(router: N, completion: @escaping(Result<T, NetworkError>) -> ()) {
+    public static func request<T: Decodable, N: RCNetworkRouter>(router: N, completion: @escaping(Result<T, RCNetworkError>) -> ()) {
         
         let components = createComponents(from: router)
         do {
@@ -20,17 +20,17 @@ public class NetworkServiceLayer {
                 
                 do {
                     try validate(response: response, error: error)
-                } catch NetworkError.noConnection {
+                } catch RCNetworkError.noConnection {
                     completion(.failure(.noConnection))
-                } catch NetworkError.noResponse {
+                } catch RCNetworkError.noResponse {
                     completion(.failure(.noResponse))
-                } catch NetworkError.noHttpResponse {
+                } catch RCNetworkError.noHttpResponse {
                     completion(.failure(.noHttpResponse))
-                } catch NetworkError.badRequest {
+                } catch RCNetworkError.badRequest {
                     completion(.failure(.badRequest))
-                } catch NetworkError.unauthorize {
+                } catch RCNetworkError.unauthorize {
                     completion(.failure(.unauthorize))
-                } catch NetworkError.forbidden {
+                } catch RCNetworkError.forbidden {
                     completion(.failure(.forbidden))
                 } catch {
                     completion(.failure(.unknown))
@@ -40,10 +40,10 @@ public class NetworkServiceLayer {
                     let parsedData = try parseResponse(data: data, into: T.self)
                     completion(.success(parsedData))
                     return
-                } catch NetworkError.noData {
+                } catch RCNetworkError.noData {
                     completion(.failure(.noData))
                     return
-                } catch let jsonDecodingError as NetworkError.JsonDecodingError {
+                } catch let jsonDecodingError as RCNetworkError.JsonDecodingError {
                     completion(.failure(.jsonDecoding(error: jsonDecodingError)))
                     return
                 } catch {
@@ -62,37 +62,37 @@ public class NetworkServiceLayer {
     
     private static func validate(response: URLResponse?, error: Error?) throws {
         if error != nil {
-            throw NetworkError.noConnection
+            throw RCNetworkError.noConnection
         }
         
         guard
             response != nil
         else {
-            throw NetworkError.noResponse
+            throw RCNetworkError.noResponse
         }
         
         guard
             let httpResponse = response as? HTTPURLResponse
         else {
-            throw NetworkError.noHttpResponse
+            throw RCNetworkError.noHttpResponse
         }
         
         switch httpResponse.statusCode {
         case 0...299:
             return
         case 400:
-            throw NetworkError.badRequest
+            throw RCNetworkError.badRequest
         case 401:
-            throw NetworkError.unauthorize
+            throw RCNetworkError.unauthorize
         case 403:
-            throw NetworkError.forbidden
+            throw RCNetworkError.forbidden
         default:
-            throw NetworkError.unknown
+            throw RCNetworkError.unknown
         }
     
     }
     
-    private static func createComponents<N: NetworkRouter>(from router: N) -> URLComponents {
+    private static func createComponents<N: RCNetworkRouter>(from router: N) -> URLComponents {
         var components = URLComponents()
         components.scheme = router.scheme
         components.host = router.host
@@ -102,11 +102,11 @@ public class NetworkServiceLayer {
         return components
     }
     
-    private static func createUrlRequest<N: NetworkRouter>(url: URL?, router: N) throws -> URLRequest {
+    private static func createUrlRequest<N: RCNetworkRouter>(url: URL?, router: N) throws -> URLRequest {
         guard
             let url = url
         else {
-            throw NetworkError.badUrl
+            throw RCNetworkError.badUrl
         }
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = router.method
@@ -122,7 +122,7 @@ public class NetworkServiceLayer {
         guard
             let data = data
         else {
-            throw NetworkError.noData
+            throw RCNetworkError.noData
         }
         
         let decoder = JSONDecoder()
@@ -135,18 +135,18 @@ public class NetworkServiceLayer {
         } catch let decodingError as DecodingError {
             switch decodingError {
             case .typeMismatch(let key, let value):
-                throw NetworkError.JsonDecodingError.typeMismatch(key: key, value: value)
+                throw RCNetworkError.JsonDecodingError.typeMismatch(key: key, value: value)
             case .valueNotFound(let key, let value):
-                throw NetworkError.JsonDecodingError.valueNotFound(key: key, value: value)
+                throw RCNetworkError.JsonDecodingError.valueNotFound(key: key, value: value)
             case .keyNotFound(let key, let value):
-                throw NetworkError.JsonDecodingError.keyNotFound(key: key, value: value)
+                throw RCNetworkError.JsonDecodingError.keyNotFound(key: key, value: value)
             case .dataCorrupted(let key):
-                throw NetworkError.JsonDecodingError.dataCorrupted(key: key)
+                throw RCNetworkError.JsonDecodingError.dataCorrupted(key: key)
             default:
-                throw NetworkError.JsonDecodingError.unknown
+                throw RCNetworkError.JsonDecodingError.unknown
             }
         } catch {
-            throw NetworkError.JsonDecodingError.unknown
+            throw RCNetworkError.JsonDecodingError.unknown
         }
     }
     
@@ -155,7 +155,7 @@ public class NetworkServiceLayer {
         let dateString = try singleValueContainer.decode(String.self)
         
         if dateString.isEmpty {
-            throw NetworkError.JsonDecodingError.DateDecodingError.isEmpty
+            throw RCNetworkError.JsonDecodingError.DateDecodingError.isEmpty
         }
         
         if let date = DateFormatter.standardWithTSeparator.date(from: dateString) {
@@ -167,6 +167,6 @@ public class NetworkServiceLayer {
                 return Date(timeIntervalSince1970: timeInterval / 1000)
             }
         }
-        throw NetworkError.JsonDecodingError.DateDecodingError.formatterUnavailable
+        throw RCNetworkError.JsonDecodingError.DateDecodingError.formatterUnavailable
     }
 }

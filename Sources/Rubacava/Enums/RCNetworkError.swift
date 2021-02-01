@@ -1,5 +1,5 @@
 //
-//  NetworkError.swift
+//  RCNetworkError.swift
 //  
 //
 //  Created by Tiziano Cialfi on 20/01/21.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum NetworkError: Error {
+public enum RCNetworkError: Error {
     case badUrl
     case noConnection
     case noResponse

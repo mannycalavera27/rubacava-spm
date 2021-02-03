@@ -14,14 +14,17 @@ public final class RCScrollView: UIScrollView {
     public init(stackView: UIStackView) {
         self.stackView = stackView
         super.init(frame: .zero)
-        
         stackView.fill(superview: self)
+    }
+    
+    public override func layoutSubviews() {
+        super.layoutSubviews()
+        
         if stackView.axis == .vertical {
             stackView.constraintWidth(widthAnchor)
         } else {
-            stackView.constraintWidth(heightAnchor)
+            stackView.constraintHeight(heightAnchor)
         }
-        
     }
     
     required init?(coder: NSCoder) {

@@ -122,22 +122,22 @@ public extension UIView {
     
     
     @discardableResult
-    func constraintWidth(_ widthAnchor: NSLayoutDimension) -> AnchoredConstraints {
+    func constraintWidth(_ width: NSLayoutDimension) -> AnchoredConstraints {
         translatesAutoresizingMaskIntoConstraints = false
         
         var anchoredConstraints = AnchoredConstraints()
-        anchoredConstraints.width = widthAnchor.constraint(equalTo: widthAnchor)
+        anchoredConstraints.width = widthAnchor.constraint(equalTo: width)
         anchoredConstraints.width?.isActive = true
         
         return anchoredConstraints
     }
     
     @discardableResult
-    func constraintHeight(_ heightAnchor: NSLayoutDimension) -> AnchoredConstraints {
+    func constraintHeight(_ height: NSLayoutDimension) -> AnchoredConstraints {
         translatesAutoresizingMaskIntoConstraints = false
         
         var anchoredConstraints = AnchoredConstraints()
-        anchoredConstraints.height = heightAnchor.constraint(equalTo: heightAnchor)
+        anchoredConstraints.height = heightAnchor.constraint(equalTo: height)
         anchoredConstraints.height?.isActive = true
         
         return anchoredConstraints
@@ -161,7 +161,7 @@ public extension UIView {
         translatesAutoresizingMaskIntoConstraints = false
         
         var anchoredConstraints = AnchoredConstraints()
-        anchoredConstraints.width = heightAnchor.constraint(equalToConstant: constant)
+        anchoredConstraints.width = widthAnchor.constraint(equalToConstant: constant)
         anchoredConstraints.width?.isActive = true
         
         return anchoredConstraints

@@ -38,26 +38,4 @@ public extension UIView {
         return sv
     }
     
-    @discardableResult
-    func size(_ size: CGSize) -> UIView {
-        translatesAutoresizingMaskIntoConstraints = false
-        widthAnchor.constraint(equalToConstant: size.width).isActive = true
-        heightAnchor.constraint(equalToConstant: size.height).isActive = true
-        return self
-    }
-    
-    @discardableResult
-    func height(_ height: CGFloat) -> UIView {
-        translatesAutoresizingMaskIntoConstraints = false
-        heightAnchor.constraint(equalToConstant: height).isActive = true
-        return self
-    }
-    
-    @discardableResult
-    func width(_ width: CGFloat) -> UIView {
-        translatesAutoresizingMaskIntoConstraints = false
-        widthAnchor.constraint(equalToConstant: width).isActive = true
-        return self
-    }
-    
 }

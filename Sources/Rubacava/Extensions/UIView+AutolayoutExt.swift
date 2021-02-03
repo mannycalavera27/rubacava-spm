@@ -120,12 +120,37 @@ public extension UIView {
         return anchoredConstraints
     }
     
+    
     @discardableResult
-    func constraintHeight(_ constant: CGFloat) -> AnchoredConstraints {
+    func constraintWidth(_ widthAnchor: NSLayoutDimension) -> AnchoredConstraints {
         translatesAutoresizingMaskIntoConstraints = false
         
         var anchoredConstraints = AnchoredConstraints()
-        anchoredConstraints.height = heightAnchor.constraint(equalToConstant: constant)
+        anchoredConstraints.width = widthAnchor.constraint(equalTo: widthAnchor)
+        anchoredConstraints.width?.isActive = true
+        
+        return anchoredConstraints
+    }
+    
+    @discardableResult
+    func constraintHeight(_ heightAnchor: NSLayoutDimension) -> AnchoredConstraints {
+        translatesAutoresizingMaskIntoConstraints = false
+        
+        var anchoredConstraints = AnchoredConstraints()
+        anchoredConstraints.height = heightAnchor.constraint(equalTo: heightAnchor)
+        anchoredConstraints.height?.isActive = true
+        
+        return anchoredConstraints
+    }
+    
+    @discardableResult
+    func constraintSize(_ size: CGSize) -> AnchoredConstraints {
+        translatesAutoresizingMaskIntoConstraints = false
+        
+        var anchoredConstraints = AnchoredConstraints()
+        anchoredConstraints.width = widthAnchor.constraint(equalToConstant: size.width)
+        anchoredConstraints.width?.isActive = true
+        anchoredConstraints.height = heightAnchor.constraint(equalToConstant: size.height)
         anchoredConstraints.height?.isActive = true
         
         return anchoredConstraints
@@ -141,4 +166,16 @@ public extension UIView {
         
         return anchoredConstraints
     }
+    
+    @discardableResult
+    func constraintHeight(_ constant: CGFloat) -> AnchoredConstraints {
+        translatesAutoresizingMaskIntoConstraints = false
+        
+        var anchoredConstraints = AnchoredConstraints()
+        anchoredConstraints.height = heightAnchor.constraint(equalToConstant: constant)
+        anchoredConstraints.height?.isActive = true
+        
+        return anchoredConstraints
+    }
+    
 }

@@ -7,4 +7,4 @@
 
 import UIKit
 
-extension UITableViewCell: ReusableView {}
+extension UITableViewCell: RCReusableView {}

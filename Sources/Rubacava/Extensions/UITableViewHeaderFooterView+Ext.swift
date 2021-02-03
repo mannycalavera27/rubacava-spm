@@ -7,4 +7,4 @@
 
 import UIKit
 
-extension UITableViewHeaderFooterView: ReusableView {}
+extension UITableViewHeaderFooterView: RCReusableView {}

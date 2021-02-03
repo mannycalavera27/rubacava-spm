@@ -7,6 +7,6 @@
 
 import Foundation
 
-protocol ReusableView {
+protocol RCReusableView {
     static var reuseIdentifier: String { get }
 }

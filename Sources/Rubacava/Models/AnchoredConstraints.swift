@@ -8,12 +8,12 @@
 import UIKit
 
 public struct AnchoredConstraints {
-    var top: NSLayoutConstraint?
-    var leading: NSLayoutConstraint?
-    var trailing: NSLayoutConstraint?
-    var bottom: NSLayoutConstraint?
-    var width: NSLayoutConstraint?
-    var height: NSLayoutConstraint?
-    var centerY: NSLayoutConstraint?
-    var centerX: NSLayoutConstraint?
+    public var top: NSLayoutConstraint?
+    public var leading: NSLayoutConstraint?
+    public var trailing: NSLayoutConstraint?
+    public var bottom: NSLayoutConstraint?
+    public var width: NSLayoutConstraint?
+    public var height: NSLayoutConstraint?
+    public var centerY: NSLayoutConstraint?
+    public var centerX: NSLayoutConstraint?
 }

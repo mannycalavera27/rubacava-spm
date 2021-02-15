@@ -15,12 +15,7 @@ public enum RCDebugPrint {
                          line: Int = #line,
                          column: Int = #column) {
         let fileName = (filePath as NSString).lastPathComponent
-        print("""
-            \(message)
-            \(fileName)
-            \(function)
-            line: \(line), col: \(column)
-        """)
+        print("\(message)\n\t\(fileName)\n\t\(function)\n\tline: \(line), column: \(column)")
     }
     #endif
 }

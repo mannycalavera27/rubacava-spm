@@ -7,7 +7,7 @@
 
 import UIKit
 
-public class RCCollectionViewController: UICollectionViewController {
+open class RCCollectionViewController: UICollectionViewController {
     
     public init(scrollDirection: UICollectionView.ScrollDirection = .vertical) {
         let layout = UICollectionViewFlowLayout()

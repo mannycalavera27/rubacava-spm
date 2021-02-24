@@ -8,8 +8,9 @@
 import UIKit
 
 public final class RCImageView: UIImageView {
-    public init(contentMode: UIView.ContentMode = .scaleAspectFill, cornerRadius: CGFloat = 0) {
+    public init(image: UIImage? = nil, contentMode: UIView.ContentMode = .scaleAspectFill, cornerRadius: CGFloat = 0) {
         super.init(frame: .zero)
+        self.image = image
         set(contentMode: contentMode)
         set(cornerRadius: cornerRadius)
     }

@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension NSLayoutConstraint {
+public extension NSLayoutConstraint {
     static func deactivateConstraint(_ constraints: NSLayoutConstraint?...) {
         constraints.forEach{ constraint in
             constraint?.isActive = false

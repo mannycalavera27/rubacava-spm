@@ -7,8 +7,8 @@
 
 import Foundation
 
-public class RCNetworkServiceLayer {
-
+public class RCNetworkServiceLayer<T: Decodable> {
+    
     public static func request<T: Decodable, N: RCNetworkRouter>(router: N, completion: @escaping(Result<T, RCNetworkError>) -> ()) {
         
         let components = createComponents(from: router)
@@ -20,6 +20,22 @@ public class RCNetworkServiceLayer {
                 
                 do {
                     try validate(response: response, error: error)
+                    
+                    do {
+                        let parsedData = try parseResponse(data: data, into: T.self)
+                        completion(.success(parsedData))
+                        return
+                    } catch RCNetworkError.noData {
+                        completion(.failure(.noData))
+                        return
+                    } catch let jsonDecodingError as RCNetworkError.JsonDecodingError {
+                        completion(.failure(.jsonDecoding(error: jsonDecodingError)))
+                        return
+                    } catch {
+                        completion(.failure(.unknown))
+                        return
+                    }
+                    
                 } catch RCNetworkError.noConnection {
                     completion(.failure(.noConnection))
                 } catch RCNetworkError.noResponse {
@@ -36,20 +52,60 @@ public class RCNetworkServiceLayer {
                     completion(.failure(.unknown))
                 }
                 
+
+            }
+            dataTask.resume()
+    
+        } catch {
+            completion(.failure(.badUrl))
+        }
+
+    }
+
+    public static func request<N: RCNetworkRouter>(router: N, completion: @escaping(Result<RCNetworkServiceResponse<T>, RCNetworkError>) -> ()) {
+        
+        let components = createComponents(from: router)
+        do {
+            let urlRequest = try createUrlRequest(url: components.url, router: router)
+            
+            let session = URLSession(configuration: .default)
+            let dataTask = session.dataTask(with: urlRequest) { data, response, error in
+                
                 do {
-                    let parsedData = try parseResponse(data: data, into: T.self)
-                    completion(.success(parsedData))
-                    return
-                } catch RCNetworkError.noData {
-                    completion(.failure(.noData))
-                    return
-                } catch let jsonDecodingError as RCNetworkError.JsonDecodingError {
-                    completion(.failure(.jsonDecoding(error: jsonDecodingError)))
-                    return
+                    let responseHeaders = try validate(response: response, error: error)
+                    
+                    do {
+                        let parsedData = try parseResponse(data: data, into: T.self)
+                        let networkServiceResponse = RCNetworkServiceResponse(headers: responseHeaders, body: parsedData)
+                        completion(.success(networkServiceResponse))
+                        return
+                    } catch RCNetworkError.noData {
+                        completion(.failure(.noData))
+                        return
+                    } catch let jsonDecodingError as RCNetworkError.JsonDecodingError {
+                        completion(.failure(.jsonDecoding(error: jsonDecodingError)))
+                        return
+                    } catch {
+                        completion(.failure(.unknown))
+                        return
+                    }
+                    
+                } catch RCNetworkError.noConnection {
+                    completion(.failure(.noConnection))
+                } catch RCNetworkError.noResponse {
+                    completion(.failure(.noResponse))
+                } catch RCNetworkError.noHttpResponse {
+                    completion(.failure(.noHttpResponse))
+                } catch RCNetworkError.badRequest {
+                    completion(.failure(.badRequest))
+                } catch RCNetworkError.unauthorize {
+                    completion(.failure(.unauthorize))
+                } catch RCNetworkError.forbidden {
+                    completion(.failure(.forbidden))
                 } catch {
                     completion(.failure(.unknown))
-                    return
                 }
+                
 
             }
             dataTask.resume()
@@ -60,7 +116,8 @@ public class RCNetworkServiceLayer {
 
     }
     
-    private static func validate(response: URLResponse?, error: Error?) throws {
+    @discardableResult
+    private static func validate(response: URLResponse?, error: Error?) throws -> [AnyHashable : Any] {
         if error != nil {
             throw RCNetworkError.noConnection
         }
@@ -79,7 +136,7 @@ public class RCNetworkServiceLayer {
         
         switch httpResponse.statusCode {
         case 0...299:
-            return
+            return httpResponse.allHeaderFields
         case 400:
             throw RCNetworkError.badRequest
         case 401:

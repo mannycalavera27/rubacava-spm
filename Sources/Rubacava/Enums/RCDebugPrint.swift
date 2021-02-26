@@ -9,7 +9,7 @@ import Foundation
 
 public enum RCDebugPrint {
     #if DEBUG
-    public static func location(_ message: String,
+    public static func location(_ message: Any,
                          filePath: String = #filePath,
                          function: String = #function,
                          line: Int = #line,

@@ -8,6 +8,6 @@
 import Foundation
 
 public struct RCNetworkServiceResponse<T: Decodable> {
-    let headers: [AnyHashable : Any]
-    let body: T
+    public let headers: [AnyHashable : Any]
+    public let body: T
 }

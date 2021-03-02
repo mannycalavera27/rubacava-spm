@@ -19,4 +19,13 @@ open class RCCollectionViewController: UICollectionViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    public func refreshControlEndRefreshing() {
+        guard let refreshControl = collectionView.refreshControl else { return }
+        DispatchQueue.main.async {
+            if refreshControl.isRefreshing {
+                refreshControl.endRefreshing()
+            }
+        }
+    }
+    
 }

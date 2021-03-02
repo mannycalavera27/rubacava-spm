@@ -21,10 +21,8 @@ open class RCCollectionViewController: UICollectionViewController {
     
     public func refreshControlEndRefreshing() {
         guard let refreshControl = collectionView.refreshControl else { return }
-        DispatchQueue.main.async {
-            if refreshControl.isRefreshing {
-                refreshControl.endRefreshing()
-            }
+        if refreshControl.isRefreshing {
+            refreshControl.endRefreshing()
         }
     }
     

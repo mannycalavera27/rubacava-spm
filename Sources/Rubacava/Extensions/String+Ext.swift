@@ -46,4 +46,19 @@ public extension String {
         return attributedString
     }
     
+    func convertStringFromHtml() throws -> String {
+        guard let data = self.data(using: .unicode) else {
+            throw RCStringError.dataConverting(message: "data converting error (maybe wrong ecoding type)")
+        }
+        let options: [NSAttributedString.DocumentReadingOptionKey: NSAttributedString.DocumentType] = [.documentType : .html]
+        
+        do {
+            let finalString = try NSAttributedString(data: data, options: options, documentAttributes: nil).string
+            return finalString
+        } catch {
+            throw RCStringError.attributedStringConverting
+        }
+
+    }
+    
 }
